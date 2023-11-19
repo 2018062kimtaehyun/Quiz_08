@@ -1,0 +1,38 @@
+class Product:
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+
+    def calculate_total_price(self, quantity):
+        total_price = self.price * quantity
+        return total_price
+
+# 상품 객체 생성
+Coffee = Product("커피", 3000)
+GreenTea = Product("녹차", 2500)
+IceTea = Product("아이스티", 3000)
+
+# 첫 번째 사용자 입력
+selected_product = input("상품을 선택하세요 (커피, 녹차, 아이스티): ")
+
+# 첫 번째 입력에 따라 객체 선택
+if selected_product == "커피":
+    product_object = Coffee
+elif selected_product == "녹차":
+    product_object = GreenTea
+elif selected_product == "아이스티":
+    product_object = IceTea
+else:
+    print("올바르지 않은 상품을 선택하셨습니다.")
+    exit()
+
+# 두 번째 사용자 입력
+try:
+    quantity = int(input("수량을 입력하세요: "))
+except ValueError:
+    print("올바르지 않은 수량입니다.")
+    exit()
+
+# calculate_total_price 함수 호출하여 총 가격 계산 및 출력
+total_price = product_object.calculate_total_price(quantity)
+print(f"{selected_product} {quantity}개의 총 가격은 {total_price}원 입니다.")
