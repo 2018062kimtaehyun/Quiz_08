@@ -1,0 +1,36 @@
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import cross_val_score, KFold, train_test_split
+from pandas.plotting import scatter_matrix
+import matplotlib.pyplot as plt
+
+filename = "./data/data.csv"
+column_names = ['sepal-length', 'sepal-width', 'petal-length', 'petal-width', 'class']
+data = pd.read_csv(filename, names=column_names)
+
+print(data.shape)
+print(data.describe())
+print(data.groupby('class').size())
+
+scatter_matrix(data, figsize=(10, 10))
+plt.savefig("scatter_matrix.png")
+
+X = data.iloc[:, 0:4]
+Y = data.iloc[:, 4]
+
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=10)
+
+model = DecisionTreeClassifier()
+
+model.fit(X_train, Y_train)
+
+y_pred = model.predict(X_test)
+print("테스트 세트 예측:", y_pred)
+
+accuracy = model.score(X_test, Y_test)
+print("테스트 세트 정확도:", accuracy)
+
+
+kfold = KFold(n_splits=10, random_state=10, shuffle=True)
+results = cross_val_score(model, X, Y, cv=kfold, scoring='accuracy')
+print("교차 검증 정확도:", results.mean())
